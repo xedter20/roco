@@ -336,7 +336,7 @@ function LoanApplication() {
       //   }
       // },
       {
-        Header: 'Date Created',
+        Header: 'Date Createds',
         accessor: 'created_at',
         Cell: ({ row, value }) => {
           return <span className="">
@@ -431,7 +431,8 @@ function LoanApplication() {
 
                 <button
                   className="btn btn-outline btn-sm ml-2"
-                  onClick={() => handleDelete(library.id)} // Replace `1` with the item's ID dynamically
+                  onClick={() => handleDelete(library.id)}
+                // Replace `1` with the item's ID dynamically
                 >
                   <i className="fa-solid fa-archive"></i> Delete
                 </button>

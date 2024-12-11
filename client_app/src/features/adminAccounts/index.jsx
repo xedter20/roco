@@ -403,15 +403,74 @@ function LoanApplication() {
         Header: 'Action',
         accessor: '',
         Cell: ({ row }) => {
-          let loan = row.original;
+          let library = row.original;
+
+          const [isModalOpen, setIsModalOpen] = useState(false);
+          const [isSubmitting, setisSubmitting] = useState(null);
+
+          console.log({ library })
+
+          const handleDelete = (id) => {
+
+            setIsModalOpen(true);
+          };
+
+          const confirmDelete = async () => {
+            // Perform delete action with activeChildID
 
 
+            try {
+              setisSubmitting(true)
+              let res = await axios({
+                // headers: {
+                //   'content-type': 'multipart/form-data'
+                // },
+                method: 'POST',
+                url: '/deleteUser',
+                data: {
+                  ...library
+                }
+              });
+
+              setIsSubmitting(false);
+              libraryList();
+              adminList()
+              toast.success(`Deleted Successfully`, {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+              });
+            } catch (error) {
+
+              console.log(error)
+              toast.error(`Something went wrong`, {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: 'light'
+              });
+            } finally {
+              setisSubmitting(false)
+              setIsModalOpen(false);
+
+            }
+
+          };
 
           return (
             (
               <div className="flex">
 
-                <button className="btn btn-outline btn-sm" onClick={() => {
+                {/* <button className="btn btn-outline btn-sm" onClick={() => {
 
                   // setisEditModalOpen(true)
                   setselectedLoan(loan);
@@ -420,18 +479,40 @@ function LoanApplication() {
                   // setFieldValue('Admin_Fname', 'dex');
                 }}>
                   <i class="fa-solid fa-eye"></i>
-                </button>
+                </button> */}
 
                 <button
                   className="btn btn-outline btn-sm ml-2 text-red-500"
-                  onClick={() => {
-                    document.getElementById('viewLoan').showModal();
-
-                    setactiveChildID(l.id);
-
-                  }}>
+                  onClick={() => handleDelete(library.id)}>
                   <i class="fa-solid fa-archive"></i>
                 </button>
+
+                {isModalOpen && (
+                  <div className="modal modal-open">
+                    <div className="modal-box">
+                      <h3 className="font-bold text-lg">Are you sure?</h3>
+                      <p className="py-4">
+                        Do you really want to delete this account? This action cannot be undone.
+                      </p>
+                      <div className="modal-action">
+                        <button
+                          className="btn btn-error"
+                          disabled={isSubmitting}
+                          onClick={confirmDelete}
+                        >
+                          Confirm
+                        </button>
+                        <button
+                          className="btn btn-ghost"
+                          onClick={() => setIsModalOpen(false)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
               </div>
             )
           );

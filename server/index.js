@@ -186,6 +186,39 @@ SELECT * FROM libraries WHERE library_id = ?
   }
 });
 
+app.post('/api/deleteUser', async (req, res) => {
+  let { admin_id } = req.body;
+
+  console.log({ admin_id });
+
+  try {
+    let [result] = await mySqlDriver.execute(
+      `
+DELETE FROM admin_account WHERE id = ? 
+
+    `,
+      [admin_id]
+    );
+
+    // await mySqlDriver.execute(`
+    //   DROP TABLE IF EXISTS ${db_name};
+    // `);
+
+    // await mySqlDriver.execute(
+    //   `
+    // DELETE FROM libraries WHERE library_id = ?
+
+    // `,
+    //   [library_id]
+    // );
+
+    res.status(200).send(' deleted successfully!');
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(`Error copying tables: ${error.message}`);
+  }
+});
+
 app.post('/api/library/list', async (req, res) => {
   // let { name, db_host, db_name, db_user, db_password, address } = req.body;
 
