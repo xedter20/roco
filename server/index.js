@@ -167,17 +167,17 @@ SELECT * FROM libraries WHERE library_id = ?
 
     console.log({ db_name });
 
-    // await mySqlDriver.execute(`
-    //   DROP TABLE IF EXISTS ${db_name};
-    // `);
+    await mySqlDriver.execute(`
+      DROP TABLE IF EXISTS ${db_name};
+    `);
 
-    // await mySqlDriver.execute(
-    //   `
-    // DELETE FROM libraries WHERE library_id = ?
+    await mySqlDriver.execute(
+      `
+    DELETE FROM libraries WHERE library_id = ?
 
-    // `,
-    //   [library_id]
-    // );
+    `,
+      [library_id]
+    );
 
     res.status(200).send('Tables deleted successfully!');
   } catch (error) {

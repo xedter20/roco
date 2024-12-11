@@ -704,6 +704,7 @@ function LoanApplication() {
           });
           document.getElementById('addLibrary').close();
           adminList();
+
         } catch (err) {
           // Check if the server responded with an error
           if (err.response) {
@@ -716,6 +717,10 @@ function LoanApplication() {
             // Something else caused the error
             alert(`Error: ${err.message}`);
           }
+        }
+
+        finally {
+          setSubmitting(false)
         }
 
 

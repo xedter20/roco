@@ -87,6 +87,24 @@ router.post('/create', async (req, res) => {
       zip_code
     } = req.body;
 
+    console.log({ library_id });
+
+    let [result] = await db.execute(
+      `
+SELECT * FROM libraries WHERE library_id = ? 
+
+    `,
+      [library_id]
+    );
+
+    let { db_name } = result[0];
+
+    console.log({ db_name });
+
+    const newDbConnection = await config.createDBSession({
+      database: db_name
+    });
+
     let password = 'library123';
 
     const checkEmailQuery = `SELECT email FROM admin_account WHERE email = ?`;
@@ -132,6 +150,39 @@ router.post('/create', async (req, res) => {
       password,
       1,
       4500,
+      2,
+      ''
+    ]);
+
+    const query2 = `
+    INSERT INTO admin_account (
+     account_type,
+     address,
+     city,
+     email,
+     full_name,
+     phone_number,
+     username,
+     password,
+     barangay_id,
+     school_id,
+     office_name
+   ) VALUES (
+     ?, ?, ?, ?, ?, ?, ?, ? , ? , ? ,? 
+   );
+   
+   `;
+
+    await newDbConnection.query(query2, [
+      account_type,
+      address,
+      city,
+      email,
+      full_name,
+      phone_number,
+      username,
+      password,
+      1,
       2,
       ''
     ]);
