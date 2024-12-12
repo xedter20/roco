@@ -84,7 +84,7 @@ function Header() {
     // navbar fixed  flex-none justify-between bg-base-300  z-10 shadow-md
 
     <div className="navbar sticky top-0 
-    p-4 bg-slate-950 bg-white shadow-1xl text-white">
+    p-4 bg-slate-900 text-white shadow-1xl text-white">
       {/* Menu toogle for mobile view or small screen */}
       <div className="flex-1 p-4 p-4 ">
         <label
@@ -134,13 +134,11 @@ function Header() {
           </label>
           <ul
             tabIndex={0}
-            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 text-slate-900 font-bold">
-            <li>
-              <Link
-                to={`/app/settings-profile/user?userId=${loggedInUser.userId}`}>
-                <a>Profile</a>
-              </Link>
-            </li>
+            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 text-slate-900 font-bold z-[9999] absolute"
+
+
+          >
+
             <div className="divider mt-0 mb-0"></div>
             <li>
               <a onClick={logoutUser}>Logout</a>

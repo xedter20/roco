@@ -105,9 +105,14 @@ function Login() {
   return (
     // <div
 
-    <div className="flex min-h-screen items-center justify-center">
-      {/* Left Column for Background Image */}
-      <div className="w-full md:w-1/2 flex items-center justify-center relative">
+    <div className="flex min-h-screen items-center justify-center relative">
+      {/* Background with Gradient and Image */}
+      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/Log In Page.jpg')" }}>
+        <div className="absolute inset-0 bg-black opacity-50"></div> {/* Dimmed Background */}
+      </div>
+
+      {/* Left Column for Form */}
+      <div className="w-full md:w-1/2 flex items-center justify-center relative z-10">
         <div className="w-full max-w-md p-8 space-y-6 shadow-lg bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white text-center text-blue-950">
             ROCO Library Master Login
@@ -161,14 +166,6 @@ function Login() {
                     </button>
                   </div>
 
-                  {/* <div className="text-right text-blue-950">
-                    <a href="/forgot-password">
-                      <span className="text-sm text-blue-950 inline-block hover:text-buttonPrimary hover:underline hover:cursor-pointer transition duration-200">
-                        Forgot Password?
-                      </span>
-                    </a>
-                  </div> */}
-
                   <button
                     type="submit"
                     className={'btn mt-2 w-full bg-blue-950 font-bold text-white' + (loading ? ' loading' : '')}
@@ -184,6 +181,8 @@ function Login() {
 
       <ToastContainer />
     </div>
+
+
 
   );
 }
