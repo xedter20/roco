@@ -42,7 +42,7 @@ function LeftSidebar() {
 
   return isLoaded && (
 
-    <div className="drawer-side text-white bg-blue-950 h-screen w-60">
+    <div className="drawer-side text-white bg-slate-950 h-screen w-60">
       <label htmlFor="left-sidebar-drawer" className="drawer-overlay"></label>
       {/* <div className=" mx-auto flex items-center justify-center mb-8 mt-4">
         <img src="/A.V. Logo.png" alt="Logo" className="w-30 h-24" />
@@ -56,7 +56,7 @@ function LeftSidebar() {
         />
       </div>
 
-      <ul className="menu bg-blue-950 text-white items-center justify-between mx-auto ">
+      <ul className="menu bg-slate-950 text-white items-center justify-between mx-auto ">
         <button
           className="btn btn-ghost bg-base-300 btn-circle z-50 top-0 right-0 mt-4 mr-2 absolute lg:hidden"
           onClick={() => close()}>
