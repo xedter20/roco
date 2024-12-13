@@ -98,7 +98,7 @@ let cypherQuerySession = `1`;
 
 let gmailEmailpassword = 'dqeq ukrn hvjg vnyx';
 
-const createDBSession = async ({ database = '' }) => {
+const createDBSession = async ({ database = false }) => {
   const poolConfig = {
     host: 'jcqlf1.stackhero-network.com',
     user: 'root',

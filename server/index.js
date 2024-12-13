@@ -246,6 +246,94 @@ app.post('/api/library/list', async (req, res) => {
   }
 });
 
+app.get('/api/books/list', async (req, res) => {
+  // let { name, db_host, db_name, db_user, db_password, address } = req.body;
+
+  try {
+    let [libraries] = await mySqlDriver.execute(
+      `
+     SELECT * FROM libraries 
+
+     ORDER BY name DESC
+
+    `,
+      []
+    );
+
+    const unionQueries = libraries.map(
+      library => `
+        SELECT 
+          id, 
+          title, 
+          author, 
+          isbn, 
+          publication_date,
+          category_id, 
+          school_id,
+          cover_photo,
+          '${library.name}' AS library_location,
+          '${library.library_id}' AS library_id,
+          '${library.db_name}' AS database_name
+        FROM ${library.db_name}.books
+      `
+    );
+
+    const booksQuery = `
+    SELECT 
+    books.cover_photo as cover_photo,
+      books.id AS bookID, 
+      books.title, 
+      books.author, 
+      books.isbn, 
+      books.publication_date,
+      issue_books.status AS status,
+      book_category.category_name AS category_name, 
+     library_location,   
+      COUNT(CASE WHEN issue_books.status = 'Borrowed' THEN issue_books.id END) AS borrowedCount,
+      books.database_name,
+      books.library_id
+    FROM 
+      (${unionQueries.join(' UNION ALL ')}) AS books
+    LEFT JOIN 
+      issue_books ON issue_books.book_id = books.id
+    LEFT JOIN 
+      book_category ON book_category.id = books.category_id
+    LEFT JOIN 
+      schools ON schools.id = books.school_id
+    GROUP BY 
+      books.id, 
+      books.title, 
+      books.author, 
+      books.isbn, 
+      books.publication_date,
+      book_category.category_name, 
+      schools.school_name, 
+      issue_books.status, 
+      books.database_name, 
+      books.library_id,
+      library_location,
+      cover_photo
+    ORDER BY 
+      books.title ASC
+  `;
+
+    const connection = await config.createDBSession({
+      database: 'library_db'
+    });
+
+    const [result] = await connection.execute(booksQuery);
+
+    // Step 4: Respond with the results
+    res.json({
+      success: true,
+      data: result
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(`Error: ${error.message}`);
+  }
+});
+
 app.listen(config.port, async () => {
   // const oldDbName = 'library_db_empty'; // Replace with your old database name
   // const newDbName = 'library_db_sti'; // Replace with your new database name
