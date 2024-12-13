@@ -422,7 +422,7 @@ function LoanApplication() {
 
                 <Link
                   target="_blank"
-                  to={`http://localhost/roco_library8-20241202T131741Z-001/roco_library8/admin?library_id=${library.library_id}&role=master_admin`}>
+                  to={`https://historya-rocolibrary.com/admin?library_id=${library.library_id}&role=master_admin`}>
                   <button className="btn btn-outline btn-sm flex items-center gap-2">
                     <i className="fa-solid fa-eye"></i>
                     View

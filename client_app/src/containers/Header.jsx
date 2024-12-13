@@ -84,7 +84,7 @@ function Header() {
     // navbar fixed  flex-none justify-between bg-base-300  z-10 shadow-md
 
     <div className="navbar sticky top-0 
-    p-4 bg-slate-900 text-white shadow-1xl text-white">
+    p-4 bg-slate-900 text-white shadow-1xl ">
       {/* Menu toogle for mobile view or small screen */}
       <div className="flex-1 p-4 p-4 ">
         <label
@@ -92,7 +92,7 @@ function Header() {
           className="btn drawer-button lg:hidden">
           <Bars3Icon className="h-5 inline-block w-5" />
         </label>
-        <h1 className="text-2xl font-bold ml-2">{pageTitle}</h1>
+        <h1 className="text-2xl font-bold ml-2 text-white">{pageTitle}</h1>
       </div>
 
       <div className="flex-none ">

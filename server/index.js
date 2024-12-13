@@ -167,8 +167,12 @@ SELECT * FROM libraries WHERE library_id = ?
 
     console.log({ db_name });
 
-    await mySqlDriver.execute(`
-      DROP TABLE IF EXISTS ${db_name};
+    const newDbConnection = await config.createDBSession({
+      database: db_name
+    });
+
+    await newDbConnection.execute(`
+   DROP DATABASE ${db_name}
     `);
 
     await mySqlDriver.execute(
