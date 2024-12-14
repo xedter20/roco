@@ -264,6 +264,7 @@ app.get('/api/books/list', async (req, res) => {
       library => `
         SELECT 
           id, 
+          number_of_copies,
           title, 
           author, 
           isbn, 
@@ -280,6 +281,7 @@ app.get('/api/books/list', async (req, res) => {
 
     const booksQuery = `
     SELECT 
+    books.number_of_copies,
     books.cover_photo as cover_photo,
       books.id AS bookID, 
       books.title, 
@@ -301,6 +303,7 @@ app.get('/api/books/list', async (req, res) => {
     LEFT JOIN 
       schools ON schools.id = books.school_id
     GROUP BY 
+    books.number_of_copies,
       books.id, 
       books.title, 
       books.author, 
