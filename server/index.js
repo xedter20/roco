@@ -280,44 +280,45 @@ app.get('/api/books/list', async (req, res) => {
     );
 
     const booksQuery = `
-    SELECT 
+   SELECT 
     books.number_of_copies,
-    books.cover_photo as cover_photo,
-      books.id AS bookID, 
-      books.title, 
-      books.author, 
-      books.isbn, 
-      books.publication_date,
-      issue_books.status AS status,
-      book_category.category_name AS category_name, 
-     library_location,   
-      COUNT(CASE WHEN issue_books.status = 'Borrowed' THEN issue_books.id END) AS borrowedCount,
-      books.database_name,
-      books.library_id
-    FROM 
-      (${unionQueries.join(' UNION ALL ')}) AS books
-    LEFT JOIN 
-      issue_books ON issue_books.book_id = books.id
-    LEFT JOIN 
-      book_category ON book_category.id = books.category_id
-    LEFT JOIN 
-      schools ON schools.id = books.school_id
-    GROUP BY 
+    books.cover_photo AS cover_photo,
+    books.id AS bookID, 
+    books.title, 
+    books.author, 
+    books.isbn, 
+    books.publication_date,
+    book_category.category_name AS category_name, 
+    books.library_location, 
+    COUNT(DISTINCT CASE 
+        WHEN issue_books.status IN ('Borrowed', 'Lost') 
+        THEN issue_books.id 
+    END) AS borrowedCount,
+    books.database_name,
+    books.library_id
+FROM 
+    (${unionQueries.join(' UNION ALL ')}) AS books
+LEFT JOIN 
+    issue_books ON issue_books.book_id = books.id
+LEFT JOIN 
+    book_category ON book_category.id = books.category_id
+LEFT JOIN 
+    schools ON schools.id = books.school_id
+GROUP BY 
     books.number_of_copies,
-      books.id, 
-      books.title, 
-      books.author, 
-      books.isbn, 
-      books.publication_date,
-      book_category.category_name, 
-      schools.school_name, 
-      issue_books.status, 
-      books.database_name, 
-      books.library_id,
-      library_location,
-      cover_photo
-    ORDER BY 
-      books.title ASC
+    books.id, 
+    books.title, 
+    books.author, 
+    books.isbn, 
+    books.publication_date,
+    book_category.category_name, 
+    books.library_location,
+    books.database_name, 
+    books.library_id,
+    books.cover_photo
+ORDER BY 
+    books.title ASC;
+
   `;
 
     const connection = await config.createDBSession({
